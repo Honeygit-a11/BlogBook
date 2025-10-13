@@ -1,0 +1,127 @@
+.login-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f9fafc;
+  font-family: "Poppins", sans-serif;
+}
+
+.login-box {
+  width: 380px;
+  background: #fff;
+  padding: 35px 40px;
+  border-radius: 12px;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+.logo img {
+  width: 50px;
+  height: 50px;
+  margin-bottom: 10px;
+}
+
+.login-box h2 {
+  font-size: 22px;
+  margin-bottom: 5px;
+  color: #222;
+}
+
+.login-box p {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+/* Tabs */
+.login-tabs {
+  display: flex;
+  background: #f1f3f6;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.login-tabs button,
+.tab-btn {
+  flex: 1;
+  padding: 10px 0;
+  background: none;
+  border: none;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 14px;
+  color: #555;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.login-tabs button.active {
+  background: #fff;
+  color: #007bff;
+  box-shadow: inset 0 -2px #007bff;
+}
+
+/* Form */
+form {
+  text-align: left;
+}
+
+label {
+  font-size: 14px;
+  display: block;
+  margin-bottom: 6px;
+  color: #333;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  transition: 0.3s;
+}
+
+input:focus {
+  border-color: #007bff;
+}
+
+.password-box {
+  position: relative;
+}
+
+.password-box i {
+  position: absolute;
+  right: 10px;
+  top: 25%;
+  color: #999;
+  cursor: pointer;
+}
+
+/* Button */
+.signin-btn {
+  width: 100%;
+  background: linear-gradient(90deg, #007bff, #004cff);
+  color: #fff;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.signin-btn:hover {
+  opacity: 0.95;
+}
