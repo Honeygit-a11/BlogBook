@@ -104,6 +104,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  height: 60px;
   background: #f3f4f6;
   padding: 0.4rem 1rem;
   border-radius: 10px;

@@ -1,0 +1,13 @@
+/* @tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* You can add your global styles below */
+/* html, body {
+	height: 100%;
+} */
+
+/* Example to verify Tailwind is applied: */
+/* .tw-test {
+	@apply text-xl font-semibold text-blue-600;
+} */ 

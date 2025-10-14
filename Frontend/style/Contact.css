@@ -1,0 +1,237 @@
+/* --- General Page Setup and Layout --- */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa; /* Light background for the overall page */
+    margin: 0;
+    padding: 0;
+}
+
+.contact-page-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+    
+    /* CSS Grid for two-column layout */
+    display: grid;
+    grid-template-columns: 2fr 1.1fr; /* Form is slightly wider than the sidebar */
+    gap: 40px;
+}
+
+/* --- Left Column: Contact Form Styling --- */
+.contact-form-section {
+    background: #fff;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.contact-form-section h2 {
+    font-size: 28px;
+    margin-bottom: 30px;
+    color: #333;
+    font-weight: 600;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+    font-size: 14px;
+}
+
+.name-fields {
+    display: flex;
+    gap: 20px;
+}
+
+.name-fields .form-group {
+    flex: 1; /* Makes first and last name fields split the space */
+}
+
+input[type="text"],
+input[type="email"],
+select,
+textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box; /* Includes padding in the element's total width */
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+textarea {
+    resize: vertical;
+}
+
+/* Checkbox and Button layout */
+.form-bottom-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.checkbox-group input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+.send-button {
+    background-color: #007bff; /* Blue button color */
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+}
+
+.send-button:hover {
+    background-color: #0056b3;
+}
+
+.send-button i {
+    margin-left: 8px;
+}
+
+/* --- Right Column: Sidebar Styling --- */
+.contact-info-sidebar {
+    padding-top: 20px;
+}
+
+.contact-info-sidebar h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+/* Contact Information Block */
+.contact-information-block {
+    margin-bottom: 30px;
+}
+
+.info-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.info-item .icon {
+    font-size: 18px;
+    color: #007bff;
+    margin-right: 15px;
+    padding-top: 5px;
+}
+
+.info-title {
+    font-weight: 600;
+    margin: 0;
+    color: #333;
+    font-size: 14px;
+}
+
+.info-content {
+    margin: 2px 0 0 0;
+    color: #007bff; /* Link color for email/phone */
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.info-sub-content {
+    margin: 0;
+    color: #6c757d;
+    font-size: 14px;
+}
+
+/* Follow Us Block */
+.follow-us-block {
+    margin-top: 30px;
+}
+
+.social-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.social-link:hover {
+    background-color: #f1f1f1;
+}
+
+.social-link .icon {
+    font-size: 20px;
+    margin-right: 15px;
+    /* Use brand colors for a better look */
+    /* NOTE: You'd define specific colors for each fab icon here */
+}
+
+/* Example Social Icon Colors (can be added as specific classes) */
+.fab.fa-twitter { color: #1da1f2; }
+.fab.fa-facebook-f { color: #3b5998; }
+.fab.fa-instagram { color: #e1306c; }
+.fab.fa-linkedin-in { color: #0077b5; }
+
+
+.platform-name {
+    font-weight: 600;
+    margin: 0;
+    color: #333;
+    font-size: 16px;
+}
+
+.platform-handle {
+    margin: 0;
+    color: #6c757d;
+    font-size: 14px;
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 992px) {
+    .contact-page-container {
+        grid-template-columns: 1fr; /* Stack columns on smaller screens */
+    }
+
+    .contact-form-section {
+        padding: 30px;
+    }
+}
+
+@media (max-width: 600px) {
+    .name-fields {
+        flex-direction: column; /* Stack name fields on very small screens */
+        gap: 0;
+    }
+    .form-bottom-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    .send-button {
+        width: 100%;
+        justify-content: center;
+    }
+}

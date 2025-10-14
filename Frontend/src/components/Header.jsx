@@ -24,9 +24,10 @@ import { Link } from 'react-router-dom';
 
             <nav className="nav">
               <Link to = "/dashboard">Home</Link> 
-              <a href="#">Categories</a>
+              <Link to="/category">Categories</Link>
+              <Link to= "/write">Write</Link>
               <Link to="/about">About</Link>
-              <a href="#">Contact</a>
+              <Link to="/contact">Contact</Link>
             </nav>
 
             <div className="search-bar">
