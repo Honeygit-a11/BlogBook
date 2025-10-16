@@ -5,6 +5,8 @@ const User = require('../models/User');
 const router = express.Router();
 const { verifyToken } = require('../middleware/authmiddleware');
 
+
+const TOKEN_EXPRIRATION = "1h";
 //sign up
 router.post("/signup", async (req, res) => {
     try{
@@ -31,7 +33,7 @@ router.post("/signup", async (req, res) => {
         await newUser.save();
         
         // Create JWT token for the newly registered user
-        const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+        const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, { expiresIn:TOKEN_EXPRIRATION });
         
         // Return success message, token and basic user info (no password)
         res.status(201).json({ 
@@ -67,7 +69,7 @@ router.post("/login", async (req, res) => {
         }
 
         // Create JWT token
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: TOKEN_EXPRIRATION  });
         res.json({ message: "Login successful", token });
     } catch (error) {
         res.status(500).json({ message: "Server error" });

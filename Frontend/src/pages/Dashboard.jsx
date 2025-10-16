@@ -1,7 +1,54 @@
-import React from "react";
-import "../../style/Dashboard.css"
+import React, { useState } from "react";
+import "../../style/Dashboard.css";
+import Pagination from "@mui/material/Pagination";
 
 const Dashboard = () => {
+  const blogs = [
+    {
+      title: "The Future of Technology",
+      desc: "Explore how emerging technologies are reshaping our world...",
+      img: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=600&h=400&fit=crop&q=80",
+    },
+    {
+      title: "Finding Inner Peace",
+      desc: "A journey through mindfulness and meditation practices...",
+      img: "https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?w=600&h=400&fit=crop&q=80",
+    },
+    {
+      title: "Creative Design Tips",
+      desc: "Master the art of visual storytelling with these essentials...",
+      img: "https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=600&h=400&fit=crop&q=80",
+    },
+    {
+      title: "Travel Adventures Await",
+      desc: "Discover hidden gems and unforgettable travel experiences...",
+      img: "https://images.unsplash.com/photo-1476275466078-4007374efbbe?w=600&h=400&fit=crop&q=80",
+    },
+    {
+      title: "Writing Mastery",
+      desc: "Unlock your creative potential with proven writing techniques...",
+      img: "https://images.unsplash.com/photo-1495521821757-a1efb6729352?w=600&h=400&fit=crop&q=80",
+    },
+    {
+      title: "Coding Best Practices",
+      desc: "Level up your development skills with expert coding patterns...",
+      img: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&h=400&fit=crop&q=80",
+    },
+  ];
+
+  const blogsPerPage = 6;
+  const [page, setPage] = useState(1);
+
+  const totalPages = Math.ceil(blogs.length / blogsPerPage);
+  const displayedBlogs = blogs.slice(
+    (page - 1) * blogsPerPage,
+    page * blogsPerPage
+  );
+
+  const handleChange = (event, value) => {
+    setPage(value);
+  };
+
   return (
     <div className="landing-page">
       {/* Hero Section */}
@@ -36,38 +83,7 @@ const Dashboard = () => {
           </div>
 
           <div className="blog-grid">
-            {[
-              {
-                title: "The Future of Technology",
-                desc: "Explore how emerging technologies are reshaping our world...",
-                img: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=600&h=400&fit=crop&q=80",
-              },
-              {
-                title: "Finding Inner Peace",
-                desc: "A journey through mindfulness and meditation practices...",
-                img: "https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?w=600&h=400&fit=crop&q=80",
-              },
-              {
-                title: "Creative Design Tips",
-                desc: "Master the art of visual storytelling with these essentials...",
-                img: "https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=600&h=400&fit=crop&q=80",
-              },
-              {
-                title: "Travel Adventures Await",
-                desc: "Discover hidden gems and unforgettable travel experiences...",
-                img: "https://images.unsplash.com/photo-1476275466078-4007374efbbe?w=600&h=400&fit=crop&q=80",
-              },
-              {
-                title: "Writing Mastery",
-                desc: "Unlock your creative potential with proven writing techniques...",
-                img: "https://images.unsplash.com/photo-1495521821757-a1efb6729352?w=600&h=400&fit=crop&q=80",
-              },
-              {
-                title: "Coding Best Practices",
-                desc: "Level up your development skills with expert coding patterns...",
-                img: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&h=400&fit=crop&q=80",
-              },
-            ].map((blog, i) => (
+            {displayedBlogs.map((blog, i) => (
               <article key={i} className="blog-card">
                 <div className="blog-image">
                   <img src={blog.img} alt={blog.title} />
@@ -81,6 +97,16 @@ const Dashboard = () => {
                 </div>
               </article>
             ))}
+          </div>
+
+          {/* Pagination */}
+          <div className="pagination-container">
+            <Pagination
+              count={totalPages}
+              page={page}
+              onChange={handleChange}
+              color="primary"
+            />
           </div>
         </div>
       </section>
@@ -148,51 +174,8 @@ const Dashboard = () => {
           </div>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="footer">
-        <div className="container">
-          <div className="footer-content">
-            <div className="footer-section">
-              <div className="footer-logo">
-                <span className="logo-icon">✍️</span>
-                <span className="logo-text">BlogSpace</span>
-              </div>
-              <p>Empowering writers and readers worldwide</p>
-            </div>
-
-            <div className="footer-section">
-              <h4>Resources</h4>
-              <ul>
-                <li><a href="#">Help Center</a></li>
-                <li><a href="#">Writing Guide</a></li>
-                <li><a href="#">Community</a></li>
-                <li><a href="#">API Docs</a></li>
-              </ul>
-            </div>
-
-            <div className="footer-section">
-              <h4>Connect</h4>
-              <div className="social-links">
-                <a href="#" className="social-icon" aria-label="Twitter">𝕏</a>
-                <a href="#" className="social-icon" aria-label="Facebook">f</a>
-                <a href="#" className="social-icon" aria-label="Instagram">📷</a>
-                <a href="#" className="social-icon" aria-label="LinkedIn">in</a>
-              </div>
-            </div>
-          </div>
-
-          <div className="footer-bottom">
-            <p>&copy; 2025 BlogSpace. All rights reserved.</p>
-            <div className="footer-links">
-              <a href="#">Privacy Policy</a>
-              <a href="#">Terms of Service</a>
-              <a href="#">Cookie Policy</a>
-            </div>
-          </div>
-        </div>
-      </footer>
     </div>
   );
-}
-export default Dashboard
+};
+
+export default Dashboard;

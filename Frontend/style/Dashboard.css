@@ -272,6 +272,7 @@ body, .landing-page {
   border: none;
   border-radius: 8px;
   font-weight: 600;
+  height: 53px;
   background: #2d3748;
   color: white;
   cursor: pointer;
@@ -396,4 +397,9 @@ body, .landing-page {
   .newsletter-content h2 {
     font-size: 2rem;
   }
+}
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  margin: 24px 0;
 }

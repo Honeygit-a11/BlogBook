@@ -1,7 +1,7 @@
 const express =require("express");
 const router = express.Router();
 const Blog = require("../models/Blog");
-const { verifyToken } = require("../middleware/authmiddleware")
+const { verifyToken ,isAdmin} = require("../middleware/authmiddleware")
 
 // create a blog
 router.post("/create", verifyToken, async (req, res) => {
@@ -49,9 +49,9 @@ router.put("/:id",verifyToken,async(req,res)=>{
     try{
         const blog = await Blog.findById(req.params.id);
         if(!blog) return res.status(404).json({message:"Blog not found"});
-        if(blog.author.toString() !== req.user.id)
+        if(blog.author.toString() !== req.user.id && req.user.role !== 'admin'){
             return res.status(403).json({message:"unauthorized"});
-
+        }
         const updated = await Blog.findByIdAndUpdate(req.params.id,req.body,{new:true});
         res.json(updated);
 }catch(error){
@@ -64,7 +64,7 @@ router.delete("/:id", verifyToken,async(req,res)=>{
     try{
         const blog = await Blog.findById(req.params.id);
         if(!blog) return res.status(404).json({message:"blog not found"});
-        if (blog.author.toString() !== req.user.id) {
+        if (blog.author.toString() !== req.user.id && req.user.role !== 'admin') {
             return res.status(403).json({ message: "unauthorized" });
         }
 
