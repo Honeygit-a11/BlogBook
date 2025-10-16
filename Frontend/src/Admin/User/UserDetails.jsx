@@ -20,7 +20,13 @@ const UserDetails = () => {
   }, []);
 
   const loadUsers = () => {
-    setUsers(getUsers());
+    const storedUsers = JSON.parse(localStorage.getItem('users')) || [];
+    setUsers(storedUsers);
+  };
+
+  const saveUsers = (data) => {
+    localStorage.setItem('users', JSON.stringify(data));
+    setUsers(data);
   };
 
   const filteredUsers = users.filter(
@@ -35,7 +41,7 @@ const UserDetails = () => {
       return;
     }
 
-    const currentUsers = getUsers();
+    const currentUsers = users;
     if (editingUser) {
       const updated = currentUsers.map((u) =>
         u.id === editingUser.id ? { ...u, ...formData } : u
@@ -58,7 +64,7 @@ const UserDetails = () => {
   };
 
   const handleDelete = (id) => {
-    const currentUsers = getUsers();
+    const currentUsers = users;
     saveUsers(currentUsers.filter((u) => u.id !== id));
     loadUsers();
     alert("User deleted successfully");

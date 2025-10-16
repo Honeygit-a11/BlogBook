@@ -7,6 +7,7 @@ import Signup from './components/Signup';
 import Login from './components/Login';
 import ProtectedRoute from './components/ProtectedRoute'; // Needs to be updated
 import { AuthProvider, AuthContext } from './context/Authcontext'; // NEW
+import AdminLayout from './Layout/AdminLayout';
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
 // Pages
@@ -17,13 +18,18 @@ import About from './pages/About';
 import Contact from "./pages/Contact";
 import { Footer } from './components/Footer';
 
+// Admin Pages
+import AdminDashboard from './Admin/Dashboard/Details';
+import UserDetails from './Admin/User/UserDetails';
+import AuthorDetails from './Admin/Author/Authordetails';
+
 // This is the core routing component
 const AppRoutes = () => {
   const { isAuthenticated } = useContext(AuthContext); // Use context state
 
   return (
     <>
-      {/* Conditional Header: Show only if authenticated 
+      {/* Conditional Header: Show only if authenticated
         (or add a separate check for public routes if needed)
       */}
       {isAuthenticated && <Header />}
@@ -33,10 +39,10 @@ const AppRoutes = () => {
           Root Path: Redirect to dashboard if logged in, otherwise show Login.
           Uses the state from context which is more reactive than localStorage check.
         */}
-        <Route path="/" element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <Login />} />
+        <Route path="/" element={<Login />} />
 
         {/* Public Routes */}
-        <Route path="/login" element={<Login />} />
+        {/* <Route path="/login" element={<Login />} /> */}
         <Route path="/signup" element={<Signup />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
@@ -59,7 +65,40 @@ const AppRoutes = () => {
             <Write />
           </ProtectedRoute>
         } />
-        
+
+        {/* Admin Routes (Admin only) */}
+        <Route path="/admin" element={
+          <ProtectedRoute adminOnly={true}>
+            <AdminLayout>
+              <AdminDashboard />
+            </AdminLayout>
+          </ProtectedRoute>
+        } />
+
+        <Route path="/admin/users" element={
+          <ProtectedRoute adminOnly={true}>
+            <AdminLayout>
+              <UserDetails />
+            </AdminLayout>
+          </ProtectedRoute>
+        } />
+
+        <Route path="/admin/authors" element={
+          <ProtectedRoute adminOnly={true}>
+            <AdminLayout>
+              <AuthorDetails />
+            </AdminLayout>
+          </ProtectedRoute>
+        } />
+
+        <Route path="/admin/dashboard" element={
+          <ProtectedRoute adminOnly={true}>
+            <AdminLayout>
+              <AdminDashboard />
+            </AdminLayout>
+          </ProtectedRoute>
+        } />
+
       </Routes>
 
       <Footer />
@@ -78,7 +117,7 @@ const App = () => {
         <AppRoutes />
       </AuthProvider>
     </BrowserRouter>
-  );
+);
 };
 
 export default App;

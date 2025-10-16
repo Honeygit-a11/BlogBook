@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "../../style/Login.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/Authcontext";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState("");
@@ -31,8 +33,13 @@ const Login = () => {
 
       if (res.ok) {
         setMessage("Login successful!");
-        localStorage.setItem("token", data.token); // optional
-        navigate("/dashboard"); // redirect
+        login(data.token, data.user); // Use context login with user data
+        // Redirect based on role
+        if (data.user.role === 'admin') {
+          navigate("/admin");
+        } else {
+          navigate("/dashboard");
+        }
       } else {
         setMessage(data.message || "Invalid credentials");
       }

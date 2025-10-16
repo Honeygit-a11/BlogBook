@@ -1,13 +1,13 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Users, PenTool, FileText, LayoutDashboard } from "lucide-react";
-import "./DashboardLayout.css"; // external CSS
+import "./Sidebar.css"; // external CSS
 
 const navItems = [
-  { icon: LayoutDashboard, label: "Dashboard", path: "/" },
-  { icon: Users, label: "Users", path: "/users" },
-  { icon: PenTool, label: "Authors", path: "/authors" },
-  { icon: FileText, label: "Posts", path: "/posts" },
+  { icon: LayoutDashboard, label: "Dashboard", path: "/admin/dashboard" },
+  { icon: Users, label: "Users", path: "/admin/users" },
+  { icon: PenTool, label: "Authors", path: "/admin/authors" },
+  { icon: FileText, label: "Posts", path: "/admin/posts" },
 ];
 
 const Sidebar = ({ children }) => {

@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "../../style/Signup.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/Authcontext";
 
 const Signup = () => {
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
   const [formData, setFormData] = useState({ name: "", email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState("");
@@ -30,7 +32,8 @@ const Signup = () => {
 
       if (res.ok) {
         setMessage("Signup successful! Please login.");
-        setTimeout(() => navigate("/dashboard"), 1500);
+        login(data.token, data.user); // Use context login with user data
+        navigate("/dashboard");
       } else {
         setMessage(data.message || "Signup failed");
       }

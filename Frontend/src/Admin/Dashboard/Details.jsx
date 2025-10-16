@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Users, PenTool, FileText, Eye } from "lucide-react";
-import "../Dashboard/Details.css";
+import "./Details.css";
 // import { getUsers, getAuthors, getPosts } from "../lib/storage";
 
 const Details = () => {
@@ -10,17 +10,25 @@ const Details = () => {
     totalPosts: 0,
     publishedPosts: 0,
   });
+  const [users, setUsers] = useState([]);
+  const [authors, setAuthors] = useState([]);
+  const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    const users = getUsers();
-    const authors = getAuthors();
-    const posts = getPosts();
+    // Mock data for now, replace with actual API calls later
+    const fetchedUsers = JSON.parse(localStorage.getItem('users')) || [];
+    const fetchedAuthors = JSON.parse(localStorage.getItem('authors')) || [];
+    const fetchedPosts = JSON.parse(localStorage.getItem('posts')) || [];
+
+    setUsers(fetchedUsers);
+    setAuthors(fetchedAuthors);
+    setPosts(fetchedPosts);
 
     setStats({
-      totalUsers: users.length,
-      totalAuthors: authors.length,
-      totalPosts: posts.length,
-      publishedPosts: posts.filter((p) => p.status === "published").length,
+      totalUsers: fetchedUsers.length,
+      totalAuthors: fetchedAuthors.length,
+      totalPosts: fetchedPosts.length,
+      publishedPosts: fetchedPosts.filter((p) => p.status === "published").length,
     });
   }, []);
 
@@ -69,19 +77,19 @@ const Details = () => {
             <div className="stat-row">
               <span>Active Users</span>
               <span className="stat-value">
-                {getUsers().filter((u) => u.status === "active").length}
+                {users.filter((u) => u.status === "active").length}
               </span>
             </div>
             <div className="stat-row">
               <span>Active Authors</span>
               <span className="stat-value">
-                {getAuthors().filter((a) => a.status === "active").length}
+                {authors.filter((a) => a.status === "active").length}
               </span>
             </div>
             <div className="stat-row">
               <span>Draft Posts</span>
               <span className="stat-value">
-                {getPosts().filter((p) => p.status === "draft").length}
+                {posts.filter((p) => p.status === "draft").length}
               </span>
             </div>
           </div>
@@ -95,8 +103,8 @@ const Details = () => {
           <div className="card-content">
             <p className="text-muted">Total views across all posts</p>
             <div className="views-total">
-              {getPosts()
-                .reduce((sum, post) => sum + post.views, 0)
+              {posts
+                .reduce((sum, post) => sum + (post.views || 0), 0)
                 .toLocaleString()}
             </div>
           </div>
