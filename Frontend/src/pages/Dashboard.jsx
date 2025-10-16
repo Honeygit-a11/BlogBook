@@ -169,7 +169,7 @@ const Dashboard = () => {
               </button>
             </form>
             <p className="privacy-note">
-              We respect your privacy. Unsubscribe at any time.
+              We are respect your privacy. Unsubscribe at any time.
             </p>
           </div>
         </div>
