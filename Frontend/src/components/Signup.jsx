@@ -51,7 +51,7 @@ const Signup = () => {
 
         {/* Tabs */}
         <div className="signup-tabs">
-          <Link to="/login" className="tab-btn">
+          <Link to="/" className="tab-btn">
             <i className="fa fa-sign-in-alt"></i> Login
           </Link>
           <button className="active">

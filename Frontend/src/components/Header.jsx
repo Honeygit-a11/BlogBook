@@ -1,18 +1,25 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import "./Header.css"
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 // 🔑 MATERIAL UI IMPORTS
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 import { deepOrange } from '@mui/material/colors';
 import IconButton from '@mui/material/IconButton'; // Added for better UX around the Avatar
+import Button from '@mui/material/Button'; // Added for logout button
+
+// Import AuthContext
+import { AuthContext } from '../context/Authcontext';
 
 // Optional: You might want to use a user context here to get the actual initials/name
 // For this example, we'll use "JS" for "John Smith"
 const USER_INITIALS = "H";
 
 const Header = () => {
+  const { isAuthenticated, logout, user } = useContext(AuthContext);
+  const navigate = useNavigate();
+
   return (
     <>
       <div className="blog-wrapper">
@@ -38,7 +45,12 @@ const Header = () => {
               <nav className="nav">
                 <Link to="/dashboard">Home</Link>
                 <Link to="/category">Categories</Link>
-                <Link to="/write">Write</Link>
+                {user && (user.role === 'author' || user.role === 'admin') && (
+                  <Link to="/write">Write</Link>
+                )}
+                {user && (user.role === "user") && (
+                  <Link to = "/author">Become a author</Link>
+                )}
                 <Link to="/about">About</Link>
                 <Link to="/contact">Contact</Link>
               </nav>
@@ -59,9 +71,21 @@ const Header = () => {
                   </svg>
                 </div>
                 
-                <IconButton 
-                    aria-label="User Profile" 
-                    // onClick={() => handleProfileClick()} 
+
+                {isAuthenticated && (
+                  <Button
+                    // variant="outlined"
+                    onClick={() => {
+                      logout();
+                    }}
+                    sx={{ ml: 0.5 }}
+                  >
+                    Logout
+                  </Button>
+                )}
+                <IconButton
+                    aria-label="User Profile"
+                    // onClick={() => handleProfileClick()}
                     size="large"
                 >
                     <Avatar sx={{ bgcolor: '#2D3748', width: 38, height: 38, fontSize: '0.875rem' }}>

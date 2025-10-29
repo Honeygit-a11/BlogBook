@@ -1,7 +1,8 @@
-         const express = require('express');
+const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const AuthorRequest = require('../models/AuthorRequest');
 const router = express.Router();
 const { verifyToken } = require('../middleware/authmiddleware');
 
@@ -87,6 +88,37 @@ router.get('/me', verifyToken, async (req, res) => {
         res.json({ user });
     } catch (error) {
         res.status(500).json({ message: error.message });
+    }
+});
+
+// Submit author request
+router.post('/author-request', verifyToken, async (req, res) => {
+    try {
+        const { fullName, email, bio, topics, portfolio } = req.body;
+        const userId = req.user.id;
+
+        // Check if user already has a pending or approved request
+        const existingRequest = await AuthorRequest.findOne({
+            userId,
+            status: { $in: ['pending', 'approved'] }
+        });
+        if (existingRequest) {
+            return res.status(400).json({ message: 'You already have a pending or approved author request' });
+        }
+
+        const newRequest = new AuthorRequest({
+            userId,
+            fullName,
+            email,
+            bio,
+            topics,
+            portfolio
+        });
+
+        await newRequest.save();
+        res.status(201).json({ message: 'Author request submitted successfully' });
+    } catch (error) {
+        res.status(500).json({ message: 'Server error: ' + error.message });
     }
 });
 

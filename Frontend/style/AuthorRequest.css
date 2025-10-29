@@ -1,0 +1,65 @@
+/* Page container */
+.form-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #f3f6fa 0%, #e3f2fd 100%);
+  padding: 40px 15px;
+  box-sizing: border-box;
+}
+
+/* Card styling */
+.form-card {
+  width: 100%;
+  max-width: 700px;
+  border-radius: 16px;
+  background-color: #fff;
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Header styling */
+.form-title {
+  font-weight: 700 !important;
+  text-align: center;
+  color: #1e293b;
+}
+
+.form-subtitle {
+  text-align: center;
+  font-size: 0.95rem;
+  margin-top: 8px;
+}
+
+/* Form layout */
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  padding-top: 10px;
+}
+
+/* Button alignment */
+.submit-btn-wrapper {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+.MuiButton-root {
+  font-weight: bold !important;
+  border-radius: 10px !important;
+  padding: 12px 0 !important;
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+  .form-card {
+    max-width: 95%;
+    padding: 10px;
+  }
+
+  .form-title {
+    font-size: 1.6rem !important;
+  }
+}

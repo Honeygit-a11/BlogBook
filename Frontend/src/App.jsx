@@ -22,6 +22,8 @@ import { Footer } from './components/Footer';
 import AdminDashboard from './Admin/Dashboard/Details';
 import UserDetails from './Admin/User/UserDetails';
 import AuthorDetails from './Admin/Author/Authordetails';
+import PendingAuthorRequests from './Admin/Author/PendingAuthorRequests';
+import AuthorRequest from './pages/AuthorRequest';
 
 // This is the core routing component
 const AppRoutes = () => {
@@ -61,8 +63,14 @@ const AppRoutes = () => {
         } />
 
         <Route path="/write" element={
-          <ProtectedRoute>
+          <ProtectedRoute authorOnly={true}>
             <Write />
+          </ProtectedRoute>
+        } />
+
+         <Route path="/author" element={
+          <ProtectedRoute>
+            <AuthorRequest />
           </ProtectedRoute>
         } />
 
@@ -87,6 +95,14 @@ const AppRoutes = () => {
           <ProtectedRoute adminOnly={true}>
             <AdminLayout>
               <AuthorDetails />
+            </AdminLayout>
+          </ProtectedRoute>
+        } />
+
+        <Route path="/admin/author-requests" element={
+          <ProtectedRoute adminOnly={true}>
+            <AdminLayout>
+              <PendingAuthorRequests />
             </AdminLayout>
           </ProtectedRoute>
         } />
