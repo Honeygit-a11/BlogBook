@@ -19,14 +19,14 @@ const Write = () => {
     const file = e.target.files?.[0];
     if (file) {
       const reader = new FileReader();
-      reader.onloadend = () => setBlog({ ...blog, image: reader.result });
+      reader.onloadend = () => setBlog({ ...blog, image: reader.result, imageFile: file });
       reader.readAsDataURL(file);
     }
   };
 
   const handleClear = () => {
     if (window.confirm("Start fresh and clear all fields?")) {
-      setBlog({ title: "", category: "", image: "", content: "" });
+      setBlog({ title: "", category: "", image: "", content: "", imageFile: null });
     }
   };
 
@@ -44,10 +44,20 @@ const Write = () => {
         return;
       }
 
+      const formData = new FormData();
+      formData.append('title', blog.title);
+      formData.append('category', blog.category);
+      formData.append('content', blog.content);
+      if (blog.imageFile) {
+        formData.append('image', blog.imageFile);
+      } else {
+        formData.append('image', blog.image); // URL
+      }
+
       const url = "http://localhost:4000/api/blogs/create";
-      const resp = await axios.post(url, blog, {
+      const resp = await axios.post(url, formData, {
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
         },
       });
@@ -55,7 +65,7 @@ const Write = () => {
       const data = resp.data;
       // Success response from backend should be 201 and include the blog
       alert("✅ Blog created successfully!");
-      setBlog({ title: "", category: "", image: "", content: "" });
+      setBlog({ title: "", category: "", image: "", content: "", imageFile: null });
     } catch (error) {
       console.error("Error creating blog:", error);
       alert("❌ Something went wrong!");
