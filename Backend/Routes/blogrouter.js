@@ -20,7 +20,7 @@ router.post("/create", verifyToken, async (req, res) => {
 // get all blogs
 router.get("/",async(req,res)=>{
     try{
-    const blogs = await Blog.find().populate("author","username email");
+    const blogs = await Blog.find().populate("author","username email role");
         res.json(blogs);
     }catch(error){
         res.status(500).json({error:error.message});

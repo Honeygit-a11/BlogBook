@@ -1,46 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../../style/Dashboard.css";
 import Pagination from "@mui/material/Pagination";
 
 const Dashboard = () => {
-  const blogs = [
-    {
-      title: "The Future of Technology",
-      desc: "Explore how emerging technologies are reshaping our world...",
-      img: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=600&h=400&fit=crop&q=80",
-    },
-    {
-      title: "Finding Inner Peace",
-      desc: "A journey through mindfulness and meditation practices...",
-      img: "https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?w=600&h=400&fit=crop&q=80",
-    },
-    {
-      title: "Creative Design Tips",
-      desc: "Master the art of visual storytelling with these essentials...",
-      img: "https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=600&h=400&fit=crop&q=80",
-    },
-    {
-      title: "Travel Adventures Await",
-      desc: "Discover hidden gems and unforgettable travel experiences...",
-      img: "https://images.unsplash.com/photo-1476275466078-4007374efbbe?w=600&h=400&fit=crop&q=80",
-    },
-    {
-      title: "Writing Mastery",
-      desc: "Unlock your creative potential with proven writing techniques...",
-      img: "https://images.unsplash.com/photo-1495521821757-a1efb6729352?w=600&h=400&fit=crop&q=80",
-    },
-    {
-      title: "Coding Best Practices",
-      desc: "Level up your development skills with expert coding patterns...",
-      img: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&h=400&fit=crop&q=80",
-    },
-  ];
+  const [blogs, setBlogs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const response = await fetch('http://localhost:4000/api/blogs');
+        if (!response.ok) throw new Error('Failed to fetch blogs');
+        const data = await response.json();
+        setBlogs(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchBlogs();
+  }, []);
+
+  const authorBlogs = blogs.filter(blog => blog.author && blog.author.role === 'author');
 
   const blogsPerPage = 6;
   const [page, setPage] = useState(1);
 
-  const totalPages = Math.ceil(blogs.length / blogsPerPage);
-  const displayedBlogs = blogs.slice(
+  const totalPages = Math.ceil(authorBlogs.length / blogsPerPage);
+  const displayedBlogs = authorBlogs.slice(
     (page - 1) * blogsPerPage,
     page * blogsPerPage
   );
@@ -48,6 +37,9 @@ const Dashboard = () => {
   const handleChange = (event, value) => {
     setPage(value);
   };
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <div className="landing-page">
@@ -83,14 +75,14 @@ const Dashboard = () => {
           </div>
 
           <div className="blog-grid">
-            {displayedBlogs.map((blog, i) => (
-              <article key={i} className="blog-card">
+            {displayedBlogs.map((blog) => (
+              <article key={blog._id} className="blog-card">
                 <div className="blog-image">
-                  <img src={blog.img} alt={blog.title} />
+                  <img src={blog.image} alt={blog.title} />
                 </div>
                 <div className="blog-content">
                   <h3>{blog.title}</h3>
-                  <p>{blog.desc}</p>
+                  <p>{blog.content}</p>
                   <a href="#" className="read-more">
                     Read More →
                   </a>
