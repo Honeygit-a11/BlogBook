@@ -16,6 +16,7 @@ import Category from './pages/Category';
 import Write from './pages/Write';
 import About from './pages/About';
 import Contact from "./pages/Contact";
+import BlogDetail from './pages/BlogDetail';
 import { Footer } from './components/Footer';
 
 // Admin Pages
@@ -71,6 +72,12 @@ const AppRoutes = () => {
          <Route path="/author" element={
           <ProtectedRoute>
             <AuthorRequest />
+          </ProtectedRoute>
+        } />
+
+        <Route path="/blog/:id" element={
+          <ProtectedRoute>
+            <BlogDetail />
           </ProtectedRoute>
         } />
 

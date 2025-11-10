@@ -1,12 +1,12 @@
-# TODO: Make Dashboard Dynamic and Show Only Author-Published Blogs
+# TODO: Implement Blog Content Truncation on Dashboard
 
-## Steps to Complete
+## Steps to Complete:
+- [x] Modify Dashboard.jsx to truncate blog content to the first 2 lines in the blog cards
+- [x] Verify that the "Read More" link navigates to the full blog detail page (BlogDetail.jsx already handles full content display)
+- [x] Test the changes to ensure truncation works and full blog opens on click
+- [ ] Verify that the "Read More" link navigates to the full blog detail page (BlogDetail.jsx already handles full content display)
+- [ ] Test the changes to ensure truncation works and full blog opens on click
 
-- [x] Update backend blogrouter.js to include author's role in the populate for get all blogs route
-- [x] Update frontend Dashboard.jsx to fetch blogs from /api/blogs endpoint
-- [x] Filter fetched blogs to only show those where author.role === 'author'
-- [x] Replace static blogs array with dynamic state (blogs, loading, error)
-- [x] Implement useEffect to fetch data on component mount
-- [x] Handle loading and error states in the UI
-- [x] Ensure pagination works with dynamic data
-- [ ] Test the changes by running the app and verifying only author blogs are shown
+## Notes:
+- Truncate by splitting content on '\n' and taking the first 2 elements.
+- The "Read More" link is already present and functional.

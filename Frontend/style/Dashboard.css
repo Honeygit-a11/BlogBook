@@ -351,6 +351,18 @@ body, .landing-page {
   flex-wrap: wrap;
   gap: 1rem;
 }
+.blog-snippet {
+  color: #718096;
+  margin-bottom: 1rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* ✅ Limit to 2 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  font-size: 1rem;
+  line-height: 1.5;
+}
 
 /* 📱 Responsive */
 @media (max-width: 992px) {

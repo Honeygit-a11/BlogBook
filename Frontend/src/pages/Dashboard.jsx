@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import "../../style/Dashboard.css";
 import Pagination from "@mui/material/Pagination";
 
@@ -82,10 +83,10 @@ const Dashboard = () => {
                 </div>
                 <div className="blog-content">
                   <h3>{blog.title}</h3>
-                  <p>{blog.content}</p>
-                  <a href="#" className="read-more">
+                  <p className="blog-snippet">{blog.content.split('\n').slice(0, 2).join('\n')}</p>
+                  <Link to={`/blog/${blog._id}`} className="read-more">
                     Read More →
-                  </a>
+                  </Link>
                 </div>
               </article>
             ))}
