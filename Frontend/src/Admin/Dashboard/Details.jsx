@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Users, PenTool, FileText, Eye } from "lucide-react";
 import "./Details.css";
-// import { getUsers, getAuthors, getPosts } from "../lib/storage";
 
 const Details = () => {
   const [stats, setStats] = useState({
@@ -10,27 +9,38 @@ const Details = () => {
     totalPosts: 0,
     publishedPosts: 0,
   });
-  const [users, setUsers] = useState([]);
-  const [authors, setAuthors] = useState([]);
-  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Mock data for now, replace with actual API calls later
-    const fetchedUsers = JSON.parse(localStorage.getItem('users')) || [];
-    const fetchedAuthors = JSON.parse(localStorage.getItem('authors')) || [];
-    const fetchedPosts = JSON.parse(localStorage.getItem('posts')) || [];
-
-    setUsers(fetchedUsers);
-    setAuthors(fetchedAuthors);
-    setPosts(fetchedPosts);
-
-    setStats({
-      totalUsers: fetchedUsers.length,
-      totalAuthors: fetchedAuthors.length,
-      totalPosts: fetchedPosts.length,
-      publishedPosts: fetchedPosts.filter((p) => p.status === "published").length,
-    });
+    const fetchStats = async () => {
+      try {
+        const response = await fetch('http://localhost:4000/api/admin/stats', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`, // Assuming token is stored in localStorage
+          },
+        });
+        if (!response.ok) throw new Error('Failed to fetch stats');
+        const data = await response.json();
+        setStats({
+          totalUsers: data.totalUsers,
+          totalAuthors: data.totalAuthors,
+          totalPosts: data.totalBlogs,
+          publishedPosts: data.publishedBlogs,
+        });
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchStats();
   }, []);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   const statCards = [
     { title: "Total Users", value: stats.totalUsers, icon: Users, color: "#2563EB", bg: "#DBEAFE" },
@@ -76,21 +86,15 @@ const Details = () => {
           <div className="card-content quick-stats">
             <div className="stat-row">
               <span>Active Users</span>
-              <span className="stat-value">
-                {users.filter((u) => u.status === "active").length}
-              </span>
+              <span className="stat-value">{stats.totalUsers}</span>
             </div>
             <div className="stat-row">
               <span>Active Authors</span>
-              <span className="stat-value">
-                {authors.filter((a) => a.status === "active").length}
-              </span>
+              <span className="stat-value">{stats.totalAuthors}</span>
             </div>
             <div className="stat-row">
               <span>Draft Posts</span>
-              <span className="stat-value">
-                {posts.filter((p) => p.status === "draft").length}
-              </span>
+              <span className="stat-value">{stats.totalPosts - stats.publishedPosts}</span>
             </div>
           </div>
         </div>
@@ -101,12 +105,8 @@ const Details = () => {
             <span className="card-title">Recent Activity</span>
           </div>
           <div className="card-content">
-            <p className="text-muted">Total views across all posts</p>
-            <div className="views-total">
-              {posts
-                .reduce((sum, post) => sum + (post.views || 0), 0)
-                .toLocaleString()}
-            </div>
+            <p className="text-muted">Total blogs created</p>
+            <div className="views-total">{stats.totalPosts}</div>
           </div>
         </div>
       </div>

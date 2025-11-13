@@ -24,13 +24,13 @@ const Dashboard = () => {
     fetchBlogs();
   }, []);
 
-  const authorBlogs = blogs.filter(blog => blog.author && blog.author.role === 'author');
+  const allBlogs = blogs; // Use all blogs instead of filtering by author role
 
   const blogsPerPage = 6;
   const [page, setPage] = useState(1);
 
-  const totalPages = Math.ceil(authorBlogs.length / blogsPerPage);
-  const displayedBlogs = authorBlogs.slice(
+  const totalPages = Math.ceil(allBlogs.length / blogsPerPage);
+  const displayedBlogs = allBlogs.slice(
     (page - 1) * blogsPerPage,
     page * blogsPerPage
   );

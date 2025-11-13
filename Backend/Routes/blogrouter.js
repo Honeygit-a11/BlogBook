@@ -30,16 +30,27 @@ router.get("/",async(req,res)=>{
 //get a single blog
 
 router.get("/:id",async(req,res) =>{
-   
-    
+
+
     try{
         console.log(req.params.id);
-        
+
     const blog =await Blog.findById({_id: req.params.id}).populate("author","username");
         if(!blog) return res.status(404).json({message:"Blog not found"});
         res.json(blog);
     }catch(error){
         res.status(500).json({error:error.message});
+    }
+});
+
+// get blogs by category
+router.get("/category/:category", async (req, res) => {
+    try {
+        const { category } = req.params;
+        const blogs = await Blog.find({ category: { $regex: new RegExp(category, 'i') } }).populate("author", "username email role");
+        res.json(blogs);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
 });
 

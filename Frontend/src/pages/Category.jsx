@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "../../style/Category.css";
 import { FaLaptopCode, FaPalette, FaBriefcase, FaHeartbeat, FaFlask, FaBook } from "react-icons/fa";
 
@@ -66,7 +67,7 @@ const Category = () => {
             </div>
             <p className="article-count">{cat.articles}</p>
             <p className="description">{cat.description}</p>
-            <button className="explore-btn">Explore →</button>
+            <Link to={`/category/${cat.title.toLowerCase()}`} className="explore-btn">Explore →</Link>
           </div>
         ))}
       </div>

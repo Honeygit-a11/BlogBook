@@ -2,6 +2,7 @@ const express =  require("express");
 const router = express.Router();
 const User = require("../models/User");
 const AuthorRequest = require("../models/AuthorRequest");
+const Blog = require("../models/Blog");
 const {verifyToken,isAdmin} = require("../middleware/authmiddleware");
 
 router.use(verifyToken,isAdmin);
@@ -63,6 +64,36 @@ router.put("/author-requests/:id/approve", async (req, res) => {
         res.json({ message: "Author request approved successfully" });
     } catch (error) {
         res.status(500).json({ message: "Error approving author request", error: error.message });
+    }
+});
+
+// Get dashboard stats
+router.get("/stats", async (req, res) => {
+    try {
+        const totalUsers = await User.countDocuments();
+        const totalAuthors = await User.countDocuments({ role: 'author' });
+        const totalBlogs = await Blog.countDocuments();
+        // Assuming all blogs are published since no status field; if drafts exist, add status to Blog model
+        const publishedBlogs = totalBlogs;
+
+        res.json({
+            totalUsers,
+            totalAuthors,
+            totalBlogs,
+            publishedBlogs
+        });
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching stats", error: error.message });
+    }
+});
+
+// Get all posts for admin
+router.get("/posts", async (req, res) => {
+    try {
+        const posts = await Blog.find().populate('author', 'username email').sort({ createdAt: -1 });
+        res.json({ posts });
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching posts", error: error.message });
     }
 });
 
