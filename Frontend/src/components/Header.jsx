@@ -85,7 +85,7 @@ const Header = () => {
                 )}
                 <IconButton
                     aria-label="User Profile"
-                    // onClick={() => handleProfileClick()}
+                    onClick={() => navigate('/profile')}
                     size="large"
                 >
                     <Avatar sx={{ bgcolor: '#2D3748', width: 38, height: 38, fontSize: '0.875rem' }}>

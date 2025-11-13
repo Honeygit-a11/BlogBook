@@ -97,4 +97,32 @@ router.get("/posts", async (req, res) => {
     }
 });
 
+// Get all authors
+router.get("/authors", async (req, res) => {
+    try {
+        const authors = await User.find({ role: 'author' }).select("-password");
+        res.json({ authors });
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching authors", error: error.message });
+    }
+});
+
+// Convert author to user
+router.put("/authors/:id/convert-to-user", async (req, res) => {
+    try {
+        const author = await User.findById(req.params.id);
+        if (!author) {
+            return res.status(404).json({ message: "Author not found" });
+        }
+        if (author.role !== 'author') {
+            return res.status(400).json({ message: "User is not an author" });
+        }
+        author.role = 'user';
+        await author.save();
+        res.json({ message: "Author converted to user successfully" });
+    } catch (error) {
+        res.status(500).json({ message: "Error converting author to user", error: error.message });
+    }
+});
+
 module.exports = router;

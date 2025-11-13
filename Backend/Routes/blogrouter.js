@@ -87,4 +87,77 @@ router.delete("/:id", verifyToken,async(req,res)=>{
         res.status(500).json({error:error.message});
     }
 });
+
+// like a blog
+router.post("/:id/like", verifyToken, async (req, res) => {
+    try {
+        const blog = await Blog.findById(req.params.id);
+        if (!blog) return res.status(404).json({ message: "Blog not found" });
+
+        const userId = req.user.id;
+        const isLiked = blog.likes.includes(userId);
+
+        if (isLiked) {
+            blog.likes = blog.likes.filter(id => id.toString() !== userId);
+        } else {
+            blog.likes.push(userId);
+        }
+
+        await blog.save();
+        res.json({ likes: blog.likes.length, isLiked: !isLiked });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// add comment to blog
+router.post("/:id/comment", verifyToken, async (req, res) => {
+    try {
+        const { text } = req.body;
+        if (!text) return res.status(400).json({ message: "Comment text is required" });
+
+        const blog = await Blog.findById(req.params.id);
+        if (!blog) return res.status(404).json({ message: "Blog not found" });
+
+        const comment = {
+            user: req.user.id,
+            text,
+            createdAt: new Date()
+        };
+
+        blog.comments.push(comment);
+        await blog.save();
+
+        // Populate the comment user
+        await blog.populate('comments.user', 'username');
+        const newComment = blog.comments[blog.comments.length - 1];
+
+        res.status(201).json(newComment);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// get comments for a blog
+router.get("/:id/comments", async (req, res) => {
+    try {
+        const blog = await Blog.findById(req.params.id).populate('comments.user', 'username');
+        if (!blog) return res.status(404).json({ message: "Blog not found" });
+
+        res.json(blog.comments);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// get blogs by author
+router.get("/author/:authorId", async (req, res) => {
+    try {
+        const blogs = await Blog.find({ author: req.params.authorId }).populate("author", "username email role");
+        res.json(blogs);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 module.exports =router;

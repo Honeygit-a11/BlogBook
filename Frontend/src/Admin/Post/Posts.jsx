@@ -53,7 +53,7 @@ const Posts = () => {
           <h1 className="page-title">Posts</h1>
           <p className="page-subtitle">Manage and organize your blog content</p>
         </div>
-        <div className="header-actions">
+        {/* <div className="header-actions">
           <button className="btn btn-outline">
             <Filter size={16} />
             Filter
@@ -62,7 +62,7 @@ const Posts = () => {
             <Plus size={16} />
             New Post
           </button>
-        </div>
+        </div> */}
       </div>
 
       {/* -------- Table Section -------- */}

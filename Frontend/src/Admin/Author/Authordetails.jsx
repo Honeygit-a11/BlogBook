@@ -1,89 +1,69 @@
 import React, { useState, useEffect } from "react";
-import { Plus, Search, MoreVertical, Edit, Trash2 } from "lucide-react";
+import { Plus, Search, MoreVertical, Edit, Trash2, UserX } from "lucide-react";
 import "../Author/Authordetails.css";
 
 const Authordetails = () => {
   const [authors, setAuthors] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [editingAuthor, setEditingAuthor] = useState(null);
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    bio: "",
-    status: "active",
-  });
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const storedAuthors = JSON.parse(localStorage.getItem("authors")) || [];
-    setAuthors(storedAuthors);
+    fetchAuthors();
   }, []);
 
-  const saveAuthors = (data) => {
-    localStorage.setItem("authors", JSON.stringify(data));
-    setAuthors(data);
-  };
-
-  const handleSave = () => {
-    if (!formData.name || !formData.email) {
-      alert("Please fill in all required fields");
-      return;
-    }
-
-    const currentAuthors = JSON.parse(localStorage.getItem("authors")) || [];
-
-    if (editingAuthor) {
-      const updated = currentAuthors.map((a) =>
-        a.id === editingAuthor.id ? { ...a, ...formData } : a
-      );
-      saveAuthors(updated);
-      alert("Author updated successfully");
-    } else {
-      const newAuthor = {
-        id: Date.now().toString(),
-        ...formData,
-        postsCount: 0,
-        joinedDate: new Date().toISOString().split("T")[0],
-      };
-      saveAuthors([...currentAuthors, newAuthor]);
-      alert("Author created successfully");
-    }
-
-    setIsDialogOpen(false);
-    resetForm();
-  };
-
-  const handleDelete = (id) => {
-    const filtered = authors.filter((a) => a.id !== id);
-    saveAuthors(filtered);
-    alert("Author deleted successfully");
-  };
-
-  const openDialog = (author) => {
-    if (author) {
-      setEditingAuthor(author);
-      setFormData({
-        name: author.name,
-        email: author.email,
-        bio: author.bio,
-        status: author.status,
+  const fetchAuthors = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch('http://localhost:4000/api/admin/authors', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
       });
-    } else {
-      resetForm();
+      const data = await response.json();
+      if (response.ok) {
+        setAuthors(data.authors);
+      } else {
+        alert(data.message || 'Failed to fetch authors');
+      }
+    } catch (error) {
+      console.error('Error fetching authors:', error);
+      alert('An error occurred while fetching authors');
     }
-    setIsDialogOpen(true);
+    setLoading(false);
   };
 
-  const resetForm = () => {
-    setEditingAuthor(null);
-    setFormData({ name: "", email: "", bio: "", status: "active" });
+  const handleConvertToUser = async (id) => {
+    if (!window.confirm('Are you sure you want to convert this author to a user?')) return;
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`http://localhost:4000/api/admin/authors/${id}/convert-to-user`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      const data = await response.json();
+      if (response.ok) {
+        alert('Author converted to user successfully');
+        fetchAuthors(); // Refresh the list
+      } else {
+        alert(data.message || 'Failed to convert author');
+      }
+    } catch (error) {
+      console.error('Error converting author:', error);
+      alert('An error occurred while converting the author');
+    }
   };
 
   const filteredAuthors = authors.filter(
     (a) =>
-      a.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      a.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
       a.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  if (loading) {
+    return <div className="authors-container"><p>Loading...</p></div>;
+  }
 
   return (
     <div className="authors-container">
@@ -92,9 +72,6 @@ const Authordetails = () => {
           <h2>Authors</h2>
           <p>Manage content creators</p>
         </div>
-        <button className="add-btn" onClick={() => openDialog()}>
-          <Plus size={18} /> Add Author
-        </button>
       </div>
 
       <div className="search-bar">
@@ -111,46 +88,30 @@ const Authordetails = () => {
         <table>
           <thead>
             <tr>
-              <th>Name</th>
+              <th>Username</th>
               <th>Email</th>
-              <th>Bio</th>
-              <th>Posts</th>
-              <th>Status</th>
+              <th>Role</th>
               <th>Joined</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {filteredAuthors.map((author) => (
-              <tr key={author.id}>
-                <td>{author.name}</td>
+              <tr key={author._id}>
+                <td>{author.username}</td>
                 <td>{author.email}</td>
-                <td className="truncate">{author.bio}</td>
                 <td>
-                  <span className="badge gray">{author.postsCount}</span>
+                  <span className="badge green">Author</span>
                 </td>
-                <td>
-                  <span
-                    className={`badge ${
-                      author.status === "active" ? "green" : "red"
-                    }`}
-                  >
-                    {author.status}
-                  </span>
-                </td>
-                <td>{author.joinedDate}</td>
+                <td>{new Date(author.createdAt).toLocaleDateString()}</td>
                 <td className="actions">
                   <button
-                    className="icon-btn edit"
-                    onClick={() => openDialog(author)}
+                    className="icon-btn"
+                    onClick={() => handleConvertToUser(author._id)}
+                    title="Convert to User"
+                    style={{ backgroundColor: '#FF9800', color: 'white' }}
                   >
-                    <Edit size={16} />
-                  </button>
-                  <button
-                    className="icon-btn delete"
-                    onClick={() => handleDelete(author.id)}
-                  >
-                    <Trash2 size={16} />
+                    <UserX size={16} />
                   </button>
                 </td>
               </tr>
@@ -158,69 +119,6 @@ const Authordetails = () => {
           </tbody>
         </table>
       </div>
-
-      {isDialogOpen && (
-        <div className="dialog-overlay">
-          <div className="dialog">
-            <h3>{editingAuthor ? "Edit Author" : "Add New Author"}</h3>
-            <div className="dialog-body">
-              <label>
-                Name
-                <input
-                  type="text"
-                  value={formData.name}
-                  onChange={(e) =>
-                    setFormData({ ...formData, name: e.target.value })
-                  }
-                />
-              </label>
-              <label>
-                Email
-                <input
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) =>
-                    setFormData({ ...formData, email: e.target.value })
-                  }
-                />
-              </label>
-              <label>
-                Bio
-                <textarea
-                  rows="3"
-                  value={formData.bio}
-                  onChange={(e) =>
-                    setFormData({ ...formData, bio: e.target.value })
-                  }
-                />
-              </label>
-              <label>
-                Status
-                <select
-                  value={formData.status}
-                  onChange={(e) =>
-                    setFormData({ ...formData, status: e.target.value })
-                  }
-                >
-                  <option value="active">Active</option>
-                  <option value="inactive">Inactive</option>
-                </select>
-              </label>
-            </div>
-            <div className="dialog-footer">
-              <button
-                className="cancel-btn"
-                onClick={() => setIsDialogOpen(false)}
-              >
-                Cancel
-              </button>
-              <button className="save-btn" onClick={handleSave}>
-                {editingAuthor ? "Update" : "Create"}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

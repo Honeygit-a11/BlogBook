@@ -1,0 +1,4 @@
+- [x] Add backend API routes for authors: GET /authors, PUT /authors/:id/convert-to-user
+- [x] Update AuthorDetails.jsx to fetch authors from API, add Convert to User button, remove localStorage
+- [x] Start backend and frontend servers
+- [ ] Test the admin author page functionality

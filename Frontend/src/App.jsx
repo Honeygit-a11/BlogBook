@@ -24,6 +24,7 @@ import UserDetails from './Admin/User/UserDetails';
 import AuthorDetails from './Admin/Author/Authordetails';
 import PendingAuthorRequests from './Admin/Author/PendingAuthorRequests';
 import AuthorRequest from './pages/AuthorRequest';
+import Profile from './pages/Profile';
 import Post from './Admin/Post/Posts';
 
 
@@ -78,6 +79,12 @@ const AppRoutes = () => {
         <Route path="/blog/:id" element={
           <ProtectedRoute>
             <BlogDetail />
+          </ProtectedRoute>
+        } />
+
+        <Route path="/profile" element={
+          <ProtectedRoute>
+            <Profile />
           </ProtectedRoute>
         } />
 
