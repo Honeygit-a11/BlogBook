@@ -40,13 +40,5 @@ const blogschema = new mongoose.Schema({
             default: Date.now
         }
     }],
-    createdAt:{
-        type:Date,
-        default:Date.now,
-    },
-    updateAt:{
-        type:Date,
-        default:Date.now,
-    }
-});
+}, { timestamps: true });
 module.exports = mongoose.model('Blog',blogschema);

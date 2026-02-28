@@ -1,0 +1,5 @@
+DB Error: {
+  "code": "ENOTFOUND",
+  "syscall": "querySrv",
+  "hostname": "_mongodb._tcp.cluster0.x9tukgh.mongodb.net"
+}

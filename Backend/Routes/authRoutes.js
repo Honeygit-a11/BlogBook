@@ -97,6 +97,17 @@ router.post('/author-request', verifyToken, async (req, res) => {
         const { fullName, email, bio, topics, portfolio } = req.body;
         const userId = req.user.id;
 
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        if (email && email !== user.email) {
+            return res.status(400).json({ message: "Email must match your account email" });
+        }
+        if (!fullName || !bio) {
+            return res.status(400).json({ message: "Missing required fields: fullName and bio are required" });
+        }
+
         // Check if user already has a pending or approved request
         const existingRequest = await AuthorRequest.findOne({
             userId,
@@ -109,7 +120,7 @@ router.post('/author-request', verifyToken, async (req, res) => {
         const newRequest = new AuthorRequest({
             userId,
             fullName,
-            email,
+            email: user.email,
             bio,
             topics,
             portfolio

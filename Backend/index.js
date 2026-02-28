@@ -1,22 +1,9 @@
-const express = require("express");
 const mongoose = require("mongoose");
-const dotenv = require("dotenv")
-const cors = require("cors");
-const authRoutes = require("./Routes/authRoutes");
-const blogrouter = require("./Routes/blogrouter");
-const adminRouter = require("./Routes/adminRoutes");
+const dotenv = require("dotenv");
+const app = require("./app");
 
 dotenv.config();
-const app = express();
 const PORT = process.env.PORT || 4000;
-app.use(express.json());
-app.use(cors());
-
-
-// Routes
-app.use("/api/auth",authRoutes);
-app.use("/api/blogs",blogrouter);
-app.use("/api/admin",adminRouter);
 
 // MongoDB connection
 mongoose.connect(process.env.MONGO_URI)
