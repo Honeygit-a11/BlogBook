@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "../../style/Category.css";
 import { FaLaptopCode, FaPalette, FaBriefcase, FaHeartbeat, FaFlask, FaBook } from "react-icons/fa";
@@ -43,40 +43,113 @@ const categories = [
 ];
 
 const popularTags = [
-  "#WebDevelopment", "#UIUX", "#Startup", "#AI", "#Productivity", "#Marketing", "#Travel", "#Health"
+  "Web Development", "UI/UX", "Startup", "AI", "Productivity", "Marketing", "Travel", "Health"
 ];
 
 const Category = () => {
-  return (
-    <div className="category-page">
-      <h2 className="category-title">Blog Categories</h2>
-      <p className="category-subtitle">
-        Discover amazing content organized by topics that interest you most. Explore our diverse collection of articles and insights.
-      </p>
+  const [query, setQuery] = useState("");
+  const [counts, setCounts] = useState({});
 
-      <div className="search-bar">
-        <input type="text" placeholder="Search categories..." />
-      </div>
+  useEffect(() => {
+    const fetchCounts = async () => {
+      try {
+        const response = await fetch("http://localhost:4000/api/blogs/categories/counts");
+        const data = await response.json();
+        if (response.ok && Array.isArray(data.counts)) {
+          const map = {};
+          data.counts.forEach((item) => {
+            map[item.category] = item.count;
+          });
+          setCounts(map);
+        }
+      } catch (error) {
+        console.error("Error fetching category counts:", error);
+      }
+    };
+    fetchCounts();
+  }, []);
+
+  const filteredCategories = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return categories;
+    return categories.filter((cat) =>
+      [cat.title, cat.description, cat.articles].join(" ").toLowerCase().includes(q)
+    );
+  }, [query]);
+
+  return (
+    <div className="category-page bg-slate-50 text-slate-900">
+      <section className="category-hero px-4 py-10 md:px-8">
+        <div className="hero-content">
+          <span className="eyebrow">Explore Topics</span>
+          <h2 className="category-title">Blog Categories</h2>
+          <p className="category-subtitle">
+            Discover stories organized by themes that match your curiosity and your work.
+          </p>
+          <div className="search-bar">
+            <input
+              type="text"
+              placeholder="Search categories, topics, or keywords"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+          </div>
+        </div>
+        <div className="hero-panel">
+          <div className="hero-stat">
+            <span className="stat-value">120+</span>
+            <span className="stat-label">Insights published</span>
+          </div>
+          <div className="hero-stat">
+            <span className="stat-value">24</span>
+            <span className="stat-label">Featured authors</span>
+          </div>
+          <div className="hero-stat">
+            <span className="stat-value">Weekly</span>
+            <span className="stat-label">New releases</span>
+          </div>
+        </div>
+      </section>
 
       <div className="category-grid">
-        {categories.map((cat, index) => (
+        {filteredCategories.map((cat, index) => (
           <div className="category-card" key={index}>
             <div className="card-header">
               {cat.icon}
               <h3>{cat.title}</h3>
             </div>
-            <p className="article-count">{cat.articles}</p>
+            <p className="article-count">
+              {typeof counts[cat.title] === "number"
+                ? `${counts[cat.title]} articles`
+                : cat.articles}
+            </p>
             <p className="description">{cat.description}</p>
-            <Link to={`/category/${cat.title.toLowerCase()}`} className="explore-btn">Explore →</Link>
+            <Link to={`/category/${cat.title.toLowerCase()}`} className="explore-btn">
+              Explore -&gt;
+            </Link>
           </div>
         ))}
       </div>
+
+      {filteredCategories.length === 0 && (
+        <div className="empty-state">
+          <h3>No categories found</h3>
+          <p>Try a different keyword or select a popular tag below.</p>
+        </div>
+      )}
 
       <div className="tags-section">
         <h3>Popular Tags</h3>
         <div className="tags">
           {popularTags.map((tag, i) => (
-            <span key={i} className="tag">{tag}</span>
+            <button
+              key={i}
+              className="tag"
+              onClick={() => setQuery(tag)}
+              type="button"
+            >
+              {tag}
+            </button>
           ))}
         </div>
       </div>
@@ -85,3 +158,4 @@ const Category = () => {
 };
 
 export default Category;
+

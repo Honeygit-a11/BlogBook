@@ -1,13 +1,24 @@
-/* @tailwind base;
+@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* You can add your global styles below */
-/* html, body {
-	height: 100%;
-} */
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap");
 
-/* Example to verify Tailwind is applied: */
-/* .tw-test {
-	@apply text-xl font-semibold text-blue-600;
-} */ 
+:root {
+  color-scheme: light;
+  --brand-indigo: #6366f1;
+  --brand-slate: #0f172a;
+  --brand-muted: #64748b;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  font-family: "Manrope", sans-serif;
+  color: var(--brand-slate);
+  background: #f8fafc;
+}

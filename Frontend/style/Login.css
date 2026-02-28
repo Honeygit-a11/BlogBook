@@ -1,97 +1,209 @@
-.login-container {
-  height: 100vh;
+@import url("https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Sora:wght@400;500;600;700&display=swap");
+
+:root {
+  --gold-50: #fff9e6;
+  --gold-100: #fff1bf;
+  --gold-200: #ffe082;
+  --gold-300: #ffd24d;
+  --gold-400: #ffc933;
+  --gold-500: #ffbf00;
+  --ink-900: #191919;
+}
+
+.auth-container {
+  min-height: 100vh;
   display: flex;
-  justify-content: center;
   align-items: center;
-  background: #f9fafc;
-  font-family: "Poppins", sans-serif;
+  justify-content: center;
+  background:
+    radial-gradient(circle at 10% 15%, rgba(255, 191, 0, 0.35), transparent 45%),
+    radial-gradient(circle at 90% 85%, rgba(255, 224, 130, 0.45), transparent 50%),
+    linear-gradient(135deg, var(--gold-50), #fffdf3 45%, #fff7d6);
+  font-family: "Sora", sans-serif;
+  padding: 32px 20px;
 }
 
-.login-box {
-  width: 380px;
-  background: #fff;
-  padding: 35px 40px;
-  border-radius: 12px;
-  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
-  text-align: center;
-}
-
-.logo img {
-  width: 50px;
-  height: 50px;
-  margin-bottom: 10px;
-}
-
-.login-box h2 {
-  font-size: 22px;
-  margin-bottom: 5px;
-  color: #222;
-}
-
-.login-box p {
-  font-size: 14px;
-  color: #666;
-  margin-bottom: 20px;
-}
-
-/* Tabs */
-.login-tabs {
-  display: flex;
-  background: #f1f3f6;
-  border-radius: 8px;
+.auth-shell {
+  width: min(1100px, 100%);
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  background: #ffffff;
+  border-radius: 24px;
   overflow: hidden;
-  margin-bottom: 20px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.12);
+  border: 1px solid #f4df95;
 }
 
-.login-tabs button,
-.tab-btn {
+.auth-panel {
+  padding: 48px;
+  background: linear-gradient(160deg, var(--gold-500), var(--gold-300));
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  position: relative;
+}
+
+.auth-panel::after {
+  content: "";
+  position: absolute;
+  right: -90px;
+  top: 60px;
+  width: 220px;
+  height: 220px;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 50%;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.brand-mark {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: #191919;
+  color: #fff;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+  letter-spacing: 1px;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.brand-name {
+  font-weight: 700;
+  color: #191919;
+}
+
+.brand-tagline {
+  color: rgba(25, 25, 25, 0.8);
+  font-size: 13px;
+}
+
+.panel-title {
+  font-family: "DM Serif Display", serif;
+  font-size: 36px;
+  margin: 0;
+  color: #191919;
+}
+
+.panel-subtitle {
+  margin: 0;
+  color: rgba(25, 25, 25, 0.85);
+  line-height: 1.6;
+}
+
+.panel-stats {
+  display: grid;
+  gap: 14px;
+}
+
+.panel-stats div {
+  display: flex;
+  flex-direction: column;
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 16px;
+  border: 1px solid rgba(25, 25, 25, 0.12);
+}
+
+.stat-value {
+  font-weight: 700;
+  color: #191919;
+}
+
+.stat-label {
+  color: rgba(25, 25, 25, 0.75);
+  font-size: 13px;
+}
+
+.auth-box {
+  padding: 48px;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.auth-header h2 {
+  margin: 0 0 6px;
+  font-size: 26px;
+  color: #191919;
+}
+
+.auth-header p {
+  margin: 0;
+  color: #6b6b6b;
+}
+
+.auth-tabs {
+  display: flex;
+  border: 1px solid #f0d98a;
+  border-radius: 999px;
+  overflow: hidden;
+  background: #fff8db;
+}
+
+.auth-tabs button,
+.auth-tabs .tab-btn {
   flex: 1;
   padding: 10px 0;
-  background: none;
+  background: transparent;
   border: none;
   text-decoration: none;
   text-align: center;
   cursor: pointer;
-  font-weight: 500;
+  font-weight: 600;
   font-size: 14px;
-  color: #555;
+  color: #6b6b6b;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: 8px;
 }
 
-.login-tabs button.active {
-  background: #fff;
-  color: #007bff;
-  box-shadow: inset 0 -2px #007bff;
+.auth-tabs button.active {
+  background: var(--gold-500);
+  color: var(--ink-900);
 }
 
-/* Form */
-form {
+.auth-box form {
   text-align: left;
 }
 
-label {
-  font-size: 14px;
-  display: block;
+.auth-box label {
+  font-size: 13px;
+  letter-spacing: 0.2px;
+  text-transform: uppercase;
+  color: #6b6b6b;
+  font-weight: 600;
   margin-bottom: 6px;
-  color: #333;
+  display: block;
 }
 
-input {
+.auth-box input {
   width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 14px;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+  border: 1px solid #e6e6e6;
+  border-radius: 12px;
+  font-size: 15px;
   outline: none;
-  transition: 0.3s;
+  transition: 0.2s ease;
+  background: #ffffff;
 }
 
-input:focus {
-  border-color: #007bff;
+.auth-box input:focus {
+  border-color: var(--gold-400);
+  box-shadow: 0 0 0 3px rgba(255, 191, 0, 0.2);
 }
 
 .password-box {
@@ -100,28 +212,55 @@ input:focus {
 
 .password-box i {
   position: absolute;
-  right: 10px;
-  top: 25%;
-  color: #999;
+  right: 12px;
+  top: 36%;
+  color: #7b8498;
   cursor: pointer;
 }
 
-/* Button */
-.signin-btn {
+.signin-btn,
+.signup-btn {
   width: 100%;
-  background: linear-gradient(90deg, #007bff, #004cff);
-  color: #fff;
+  background: var(--gold-500);
+  color: var(--ink-900);
   border: none;
   padding: 12px;
-  border-radius: 8px;
+  border-radius: 12px;
   font-size: 15px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: 8px;
+  font-weight: 600;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.signin-btn:hover {
-  opacity: 0.95;
+.signin-btn:hover,
+.signup-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 28px rgba(224, 168, 0, 0.4);
+}
+
+.response-message {
+  margin: 0;
+  font-size: 14px;
+  color: #6b6b6b;
+}
+
+@media (max-width: 960px) {
+  .auth-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .auth-panel {
+    order: 2;
+  }
+}
+
+@media (max-width: 640px) {
+  .auth-panel,
+  .auth-box {
+    padding: 32px 24px;
+  }
 }

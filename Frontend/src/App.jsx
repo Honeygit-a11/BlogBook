@@ -1,5 +1,5 @@
-import React, { useContext, useEffect } from 'react';
-import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
+import React, { useContext, useEffect, useState } from 'react';
+import { BrowserRouter, Route, Routes, Navigate, useLocation } from 'react-router-dom';
 import Header from './components/Header';
 import Signup from './components/Signup';
 import Login from './components/Login';
@@ -30,11 +30,20 @@ import Post from './Admin/Post/Posts';
 
 const AppRoutes = () => {
   const { isAuthenticated } = useContext(AuthContext); 
+  const location = useLocation();
+  const [searchTerm, setSearchTerm] = useState("");
+  const isAuthPage = location.pathname === "/" || location.pathname === "/signup";
+  const isAdminPage = location.pathname.startsWith("/admin");
+  const showHeader = isAuthenticated && !isAuthPage && !isAdminPage;
+  const showFooter = !isAuthPage && !isAdminPage;
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
 
   return (
     <>
-     
-      {isAuthenticated && <Header />}
+      {showHeader && <Header searchTerm={searchTerm} onSearchChange={setSearchTerm} />}
 
       <Routes>
        
@@ -48,7 +57,7 @@ const AppRoutes = () => {
   
         <Route path="/dashboard" element={
           <ProtectedRoute>
-            <Dashboard />
+            <Dashboard searchTerm={searchTerm} />
           </ProtectedRoute>
         } />
 
@@ -138,7 +147,7 @@ const AppRoutes = () => {
 
       </Routes>
 
-      <Footer />
+      {showFooter && <Footer />}
     </>
   );
 };

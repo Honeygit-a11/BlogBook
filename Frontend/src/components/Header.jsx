@@ -1,104 +1,131 @@
-import React, { useContext } from 'react'
-import "./Header.css"
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useContext, useState } from "react";
+import "./Header.css";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 
-// 🔑 MATERIAL UI IMPORTS
-import Avatar from '@mui/material/Avatar';
-import Stack from '@mui/material/Stack';
-import { deepOrange } from '@mui/material/colors';
-import IconButton from '@mui/material/IconButton'; // Added for better UX around the Avatar
-import Button from '@mui/material/Button'; // Added for logout button
+import Avatar from "@mui/material/Avatar";
+import IconButton from "@mui/material/IconButton";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 
-// Import AuthContext
-import { AuthContext } from '../context/Authcontext';
+import { AuthContext } from "../context/Authcontext";
 
-// Optional: You might want to use a user context here to get the actual initials/name
-// For this example, we'll use "JS" for "John Smith"
-const USER_INITIALS = "H";
+const getInitials = (name) => {
+  if (!name) return "U";
+  const parts = name.trim().split(/\s+/);
+  if (parts.length === 1) return parts[0].slice(0, 1).toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+};
 
-const Header = () => {
+const Header = ({ searchTerm = "", onSearchChange }) => {
   const { isAuthenticated, logout, user } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [avatarAnchorEl, setAvatarAnchorEl] = useState(null);
+  const initials = getInitials(user?.username || user?.name);
+  const isAvatarMenuOpen = Boolean(avatarAnchorEl);
+  const primaryAction =
+    user && (user.role === "author" || user.role === "admin")
+      ? { label: "Write", to: "/write" }
+      : { label: "Become an author", to: "/author" };
 
   return (
-    <>
-      <div className="blog-wrapper">
-        {/* Header */}
-        <header className="header">
-          <div className="container">
-            <div className="header-inner">
-              
-              {/* Logo Section */}
-              <div className="logo">
-                <svg
-                  height="24"
-                  width="24"
-                  fill="currentColor"
-                  viewBox="0 0 48 48"
-                >
-                  <path d="M6 6H42L36 24L42 42H6L12 24L6 6Z" />
-                </svg>
-                <span>BlogBook</span>
-              </div>
+    <div className="site-header">
+      <header className="header">
+        <div className="container header-inner">
+          <Link to="/dashboard" className="logo">
+            BlogBook
+          </Link>
 
-              {/* Navigation Links */}
-              <nav className="nav">
-                <Link to="/dashboard">Home</Link>
-                <Link to="/category">Categories</Link>
-                {user && (user.role === 'author' || user.role === 'admin') && (
-                  <Link to="/write">Write</Link>
-                )}
-                {user && (user.role === "user") && (
-                  <Link to = "/author">Become a author</Link>
-                )}
-                <Link to="/about">About</Link>
-                <Link to="/contact">Contact</Link>
-              </nav>
+          <button
+            type="button"
+            className="menu-toggle"
+            onClick={() => setIsMenuOpen((prev) => !prev)}
+            aria-label="Toggle navigation"
+            aria-expanded={isMenuOpen}
+          >
+            {isMenuOpen ? "Close" : "Menu"}
+          </button>
 
-              {/* 🔑 Search and Avatar/Profile Section */}
-              <div className="actions-section">
-                
-                {/* Search Bar */}
-                <div className="search-bar1">
-                  <input type="text" placeholder="Search" />
-                  <svg
-                    height="20"
-                    width="20"
-                    fill="currentColor"
-                    viewBox="0 0 256 256"
-                  >
-                    <path d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z" />
-                  </svg>
-                </div>
-                
+          <nav
+            className={`nav ${isMenuOpen ? "open" : ""}`}
+          >
+            <NavLink to="/dashboard" onClick={() => setIsMenuOpen(false)}>
+              Home
+            </NavLink>
+            <NavLink to="/category" onClick={() => setIsMenuOpen(false)}>
+              Categories
+            </NavLink>
+            <NavLink to="/about" onClick={() => setIsMenuOpen(false)}>
+              About
+            </NavLink>
+            <NavLink to="/contact" onClick={() => setIsMenuOpen(false)}>
+              Contact
+            </NavLink>
+          </nav>
 
-                {isAuthenticated && (
-                  <Button
-                    // variant="outlined"
-                    onClick={() => {
-                      logout();
-                    }}
-                    sx={{ ml: 0.5 }}
-                  >
-                    Logout
-                  </Button>
-                )}
-                <IconButton
-                    aria-label="User Profile"
-                    onClick={() => navigate('/profile')}
-                    size="large"
-                >
-                    <Avatar sx={{ bgcolor: '#2D3748', width: 38, height: 38, fontSize: '0.875rem' }}>
-                        {USER_INITIALS}
-                    </Avatar>
-                </IconButton>
-
-              </div>
+          <div className={`actions-section ${isMenuOpen ? "open" : ""}`}>
+            <div className="search-bar1">
+              <input
+                type="search"
+                placeholder="Search stories, authors..."
+                value={searchTerm}
+                onChange={(event) => onSearchChange?.(event.target.value)}
+                className="search-input"
+              />
+              <span className="sr-only">Search</span>
             </div>
+
+            {isAuthenticated && (
+              <Link
+                to={primaryAction.to}
+                className="primary-btn"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {primaryAction.label}
+              </Link>
+            )}
+
+            <IconButton
+              aria-label="User Profile"
+              onClick={(event) => {
+                setIsMenuOpen(false);
+                setAvatarAnchorEl((prev) => (prev ? null : event.currentTarget));
+              }}
+              size="large"
+            >
+              <Avatar sx={{ bgcolor: "#191919", width: 36, height: 36, fontSize: "0.85rem" }}>
+                {initials}
+              </Avatar>
+            </IconButton>
+            <Menu
+              anchorEl={avatarAnchorEl}
+              open={isAvatarMenuOpen}
+              onClose={() => setAvatarAnchorEl(null)}
+              anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+              transformOrigin={{ vertical: "top", horizontal: "right" }}
+            >
+              <MenuItem
+                onClick={() => {
+                  setAvatarAnchorEl(null);
+                  navigate("/profile");
+                }}
+              >
+                Profile
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  setAvatarAnchorEl(null);
+                  logout();
+                }}
+              >
+                Sign out
+              </MenuItem>
+            </Menu>
           </div>
-        </header>
-      </div>
-    </>
-  )
-}
+        </div>
+      </header>
+    </div>
+  );
+};
+
 export default Header;

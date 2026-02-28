@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../context/Authcontext';
-import "../../style/Dashboard.css"; // Reuse dashboard styles
+import "../../style/Profile.css";
 
 const Profile = () => {
   const { user } = useContext(AuthContext);
@@ -43,14 +43,14 @@ const Profile = () => {
     }
   };
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  if (loading) return <div className="profile-status">Loading...</div>;
+  if (error) return <div className="profile-status">Error: {error}</div>;
 
   return (
-    <div className="landing-page">
-      <section className="hero-section">
-        <div className="container">
-          <div className="hero-content">
+    <div className="profile-page bg-slate-50 text-slate-900">
+      <section className="profile-hero px-4 py-10 md:px-8">
+        <div className="profile-container">
+          <div className="profile-hero-content">
             <h1 className="hero-title">
               My Profile: <span className="highlight">{user?.username}</span>
             </h1>
@@ -62,35 +62,37 @@ const Profile = () => {
         </div>
       </section>
 
-      <section className="featured-blogs">
-        <div className="container">
+      <section className="profile-blogs px-4 pb-12 md:px-8">
+        <div className="profile-container">
           <div className="section-header">
             <h2>My Blogs</h2>
             <p>Your published stories</p>
           </div>
 
           {blogs.length === 0 ? (
-            <p>You haven't written any blogs yet. <Link to="/write">Start writing!</Link></p>
+            <p className="profile-empty">
+              You haven't written any blogs yet. <Link to="/write">Start writing!</Link>
+            </p>
           ) : (
-            <div className="blog-grid">
+            <div className="profile-grid">
               {blogs.map((blog) => (
-                <article key={blog._id} className="blog-card">
-                  <div className="blog-image">
+                <article key={blog._id} className="profile-card">
+                  <div className="profile-image">
                     <img src={blog.image} alt={blog.title} />
                   </div>
-                  <div className="blog-content">
+                  <div className="profile-content">
                     <h3>{blog.title}</h3>
-                    <p className="blog-snippet">{blog.content.split('\n').slice(0, 2).join('\n')}</p>
-                    <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
-                      <Link to={`/blog/${blog._id}`} className="read-more">
+                    <p className="profile-snippet">{blog.content.split('\n').slice(0, 2).join('\n')}</p>
+                    <div className="profile-actions">
+                      <Link to={`/blog/${blog._id}`} className="profile-btn">
                         View
                       </Link>
-                      <Link to={`/write?edit=${blog._id}`} className="read-more">
+                      <Link to={`/write?edit=${blog._id}`} className="profile-btn">
                         Edit
                       </Link>
                       <button
                         onClick={() => handleDelete(blog._id)}
-                        style={{ background: 'red', color: 'white', border: 'none', padding: '5px 10px', cursor: 'pointer' }}
+                        className="delete-btn"
                       >
                         Delete
                       </button>

@@ -53,8 +53,8 @@ const CategoryBlogs = () => {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div className="category-blogs-page">
-      <div className="container">
+    <div className="category-blogs-page bg-slate-50 text-slate-900">
+      <div className="container px-4 py-10 md:px-8">
         <div className="category-header">
           <h1>{category} Blogs</h1>
           <p>Discover all stories in the {category} category</p>
@@ -109,3 +109,5 @@ const CategoryBlogs = () => {
 };
 
 export default CategoryBlogs;
+
+

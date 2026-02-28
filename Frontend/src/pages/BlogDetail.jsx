@@ -84,13 +84,13 @@ const BlogDetail = () => {
     }
   };
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
-  if (!blog) return <div>Blog not found</div>;
+  if (loading) return <div className="blog-status">Loading...</div>;
+  if (error) return <div className="blog-status">Error: {error}</div>;
+  if (!blog) return <div className="blog-status">Blog not found</div>;
 
   return (
-    <div className="blog-detail-page1">
-      <div className="container1">
+    <div className="blog-detail-page1 bg-slate-50 text-slate-900">
+      <div className="container1 px-4 py-8 md:px-8">
         <article className="blog-detail1">
           <div className="blog-image1">
             <img src={blog.image} alt={blog.title} />
@@ -106,32 +106,23 @@ const BlogDetail = () => {
               ))}
             </div>
 
-            {/* Like Section */}
-            <div style={{ marginTop: '20px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div className="blog-actions">
               <button
                 onClick={handleLike}
-                style={{
-                  background: isLiked ? '#ff4081' : '#f0f0f0',
-                  color: isLiked ? 'white' : 'black',
-                  border: 'none',
-                  padding: '10px 20px',
-                  borderRadius: '5px',
-                  cursor: 'pointer'
-                }}
+                className={`like-btn ${isLiked ? 'liked' : ''}`}
               >
                 {isLiked ? 'Unlike' : 'Like'} ({likes})
               </button>
             </div>
 
-            {/* Comments Section */}
-            <div style={{ marginTop: '30px' }}>
+            <div className="comments-section">
               <h3>Comments</h3>
               {comments.length === 0 ? (
                 <p>No comments yet.</p>
               ) : (
-                <div>
+                <div className="comments-list">
                   {comments.map((comment, index) => (
-                    <div key={index} style={{ borderBottom: '1px solid #eee', padding: '10px 0' }}>
+                    <div key={index} className="comment-item">
                       <strong>{comment.user?.username || 'Anonymous'}:</strong> {comment.text}
                       <br />
                       <small>{new Date(comment.createdAt).toLocaleString()}</small>
@@ -141,18 +132,18 @@ const BlogDetail = () => {
               )}
 
               {user && (
-                <form onSubmit={handleCommentSubmit} style={{ marginTop: '20px' }}>
+                <form onSubmit={handleCommentSubmit} className="comment-form">
                   <textarea
                     value={newComment}
                     onChange={(e) => setNewComment(e.target.value)}
                     placeholder="Add a comment..."
                     rows="4"
-                    style={{ width: '100%', padding: '10px', border: '1px solid #ccc', borderRadius: '5px' }}
+                    className="comment-input"
                     required
                   />
                   <button
                     type="submit"
-                    style={{ marginTop: '10px', padding: '10px 20px', background: '#007bff', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}
+                    className="comment-submit"
                   >
                     Submit Comment
                   </button>

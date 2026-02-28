@@ -20,7 +20,7 @@ const Button = ({ icon, children }) => (
 
 export default function About() {
   return (
-    <div className="about-container">
+    <div className="about-container bg-slate-50 text-slate-900">
       {/* Hero Section */}
       <div className="hero-section1">
         <div className="hero-content">

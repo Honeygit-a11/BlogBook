@@ -1,65 +1,104 @@
-/* Page container */
-.form-page {
+@import url("https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Sora:wght@400;500;600;700&display=swap");
+
+.author-page {
   min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: linear-gradient(135deg, #f3f6fa 0%, #e3f2fd 100%);
-  padding: 40px 15px;
-  box-sizing: border-box;
+  background: #f7f7f5;
+  color: #191919;
+  font-family: "Sora", sans-serif;
 }
 
-/* Card styling */
-.form-card {
+.author-wrap {
   width: 100%;
-  max-width: 700px;
-  border-radius: 16px;
-  background-color: #fff;
-  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 1.25rem;
 }
 
-/* Header styling */
-.form-title {
-  font-weight: 700 !important;
-  text-align: center;
-  color: #1e293b;
+.author-hero {
+  background:
+    radial-gradient(circle at 90% 10%, rgba(255, 192, 23, 0.25), transparent 30%),
+    #ffffff;
+  border-bottom: 1px solid #e8e8e8;
+  padding: 2.2rem 0 1.6rem;
 }
 
-.form-subtitle {
-  text-align: center;
-  font-size: 0.95rem;
-  margin-top: 8px;
+.author-kicker {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #6b6b6b;
 }
 
-/* Form layout */
-.form-container {
+.author-hero h1 {
+  margin: 0.35rem 0 0.7rem;
+  font-family: "DM Serif Display", serif;
+  font-size: clamp(2rem, 4.8vw, 3.3rem);
+  line-height: 1.1;
+}
+
+.author-lead {
+  max-width: 760px;
+  color: #4f4f4f;
+  line-height: 1.7;
+}
+
+.author-badges {
+  margin-top: 0.7rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.author-badges span {
+  border: 1px solid #dcdcdc;
+  border-radius: 999px;
+  padding: 0.38rem 0.75rem;
+  background: #ffffff;
+  font-size: 0.83rem;
+}
+
+.author-form-area {
+  padding: 1.2rem 0 2rem;
+}
+
+.author-form-shell {
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.author-form-card {
+  border: 1px solid #e6e6e6;
+  border-radius: 18px;
+  background: #ffffff;
+}
+
+.author-form-card {
+  padding: 1rem;
+}
+
+.author-form-head h2 {
+  margin: 0;
+  font-family: "DM Serif Display", serif;
+  font-size: 1.9rem;
+}
+
+.author-form-head p {
+  margin: 0.4rem 0 0;
+  color: #6b6b6b;
+}
+
+.author-form {
+  margin-top: 0.85rem;
   display: flex;
   flex-direction: column;
-  gap: 22px;
-  padding-top: 10px;
+  gap: 0.65rem;
 }
 
-/* Button alignment */
-.submit-btn-wrapper {
-  margin-top: 10px;
-  display: flex;
-  justify-content: center;
-}
-
-.MuiButton-root {
-  font-weight: bold !important;
-  border-radius: 10px !important;
-  padding: 12px 0 !important;
-}
-
-/* Responsive design */
-@media (max-width: 600px) {
-  .form-card {
-    max-width: 95%;
-    padding: 10px;
-  }
-
-  .form-title {
-    font-size: 1.6rem !important;
+@media (max-width: 940px) {
+  .author-hero {
+    padding-top: 1.7rem;
+    padding-bottom: 1.2rem;
   }
 }

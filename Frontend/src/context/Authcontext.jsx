@@ -4,53 +4,74 @@ import { useNavigate } from 'react-router-dom';
 export const AuthContext = createContext({
   isAuthenticated: false,
   user: null,
+  authReady: false,
   login: () => { },
   logout: () => { },
 });
 
 export const AuthProvider = ({ children }) => {
-  // Initialize state based on the token in localStorage
-  const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('token'));
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
+  const [authReady, setAuthReady] = useState(false);
   const navigate = useNavigate()
 
-  // Optional: Add a side effect to update state when localStorage changes
-  // (e.g., if a token is set in a separate login component)
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    const userData = localStorage.getItem('user');
-    if (token && userData) {
-      setIsAuthenticated(true);
-      setUser(JSON.parse(userData));
-    }
-  }, []); // Only runs on mount
-
-  // Function to refresh user data from server
-  const refreshUser = async () => {
-    try {
+    const hydrateAuth = async () => {
       const token = localStorage.getItem('token');
-      if (token) {
+      const userData = localStorage.getItem('user');
+
+      if (!token) {
+        setIsAuthenticated(false);
+        setUser(null);
+        setAuthReady(true);
+        return;
+      }
+
+      setIsAuthenticated(true);
+
+      if (userData) {
+        try {
+          setUser(JSON.parse(userData));
+          setAuthReady(true);
+          return;
+        } catch {
+          localStorage.removeItem('user');
+        }
+      }
+
+      try {
         const response = await fetch('http://localhost:4000/api/auth/me', {
           headers: {
             'Authorization': `Bearer ${token}`
           }
         });
+        if (!response.ok) {
+          throw new Error('Failed to fetch user');
+        }
         const data = await response.json();
-        if (response.ok) {
+        if (data?.user) {
           setUser(data.user);
           localStorage.setItem('user', JSON.stringify(data.user));
         }
+      } catch {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        setIsAuthenticated(false);
+        setUser(null);
+      } finally {
+        setAuthReady(true);
       }
-    } catch (error) {
-      console.error('Error refreshing user data:', error);
-    }
-  };
+    };
+
+    hydrateAuth();
+  }, []);
 
   const login = (token, userData) => {
     localStorage.setItem('token', token);
     localStorage.setItem('user', JSON.stringify(userData));
     setIsAuthenticated(true);
     setUser(userData);
+    setAuthReady(true);
   };
 
   const logout = () => {
@@ -58,12 +79,13 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('user');
     setIsAuthenticated(false);
     setUser(null);
+    setAuthReady(true);
     navigate('/');
     // You might also want to clear other user data here
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, user, authReady, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

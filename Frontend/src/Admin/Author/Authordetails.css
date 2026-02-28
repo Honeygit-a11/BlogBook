@@ -1,23 +1,50 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap");
+
 .authors-container {
-  padding: 2rem;
-  background: #f8f9fa;
+  padding: clamp(16px, 2vw, 28px);
+  background: radial-gradient(circle at top left, #eef2ff 0%, #f8fafc 45%, #fff7ed 100%);
   min-height: 100vh;
+  font-family: "Manrope", sans-serif;
+  color: #0f172a;
 }
 
 .authors-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
 .authors-header h2 {
-  font-size: 1.8rem;
-  margin-bottom: 0.25rem;
+  font-size: 2rem;
+  margin-bottom: 0.35rem;
+  font-family: "Space Grotesk", sans-serif;
 }
 
 .authors-header p {
-  color: #6c757d;
+  color: #64748b;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 11px;
+  font-weight: 600;
+  color: #6366f1;
+}
+
+.meta-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #0f172a;
+  color: #f8fafc;
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
 }
 
 .add-btn {
@@ -38,41 +65,127 @@
 
 .search-bar {
   position: relative;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
 }
 .search-bar input {
   width: 100%;
-  padding: 10px 12px 10px 35px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
+  padding: 12px 12px 12px 36px;
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 10px 20px rgba(15, 23, 42, 0.06);
 }
 .search-bar .search-icon {
   position: absolute;
   top: 50%;
   left: 10px;
   transform: translateY(-50%);
-  color: #888;
+  color: #94a3b8;
+}
+
+.request-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.request-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 16px 18px;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.request-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.request-head h3 {
+  font-size: 18px;
+  font-family: "Space Grotesk", sans-serif;
+  margin-bottom: 4px;
+}
+
+.request-tag {
+  display: inline-flex;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  background: #ede9fe;
+  color: #5b21b6;
+}
+
+.request-meta {
+  display: grid;
+  gap: 8px;
+  color: #475569;
+  font-size: 13px;
+}
+
+.request-meta div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.request-bio {
+  color: #475569;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.request-actions {
+  margin-top: auto;
+}
+
+.approve-btn {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(120deg, #22c55e 0%, #16a34a 100%);
+  color: #ffffff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.approve-btn:hover {
+  opacity: 0.9;
 }
 
 .authors-table table {
   width: 100%;
   border-collapse: collapse;
   background: white;
-  border-radius: 8px;
-  overflow: hidden;
+  border-radius: 14px;
 }
 
 .authors-table th,
 .authors-table td {
-  padding: 10px 12px;
+  padding: 12px 14px;
   text-align: left;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #e2e8f0;
 }
 
 .authors-table th {
-  background: #f1f3f5;
+  background: #f8fafc;
   font-weight: 600;
-  color: #333;
+  color: #0f172a;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
 
 .truncate {
@@ -102,12 +215,12 @@
 }
 
 .icon-btn {
-  background: none;
-  border: none;
+  background: #f8fafc;
+  border: 1px solid rgba(148, 163, 184, 0.35);
   cursor: pointer;
-  padding: 4px;
+  padding: 6px;
   margin-left: 6px;
-  border-radius: 4px;
+  border-radius: 8px;
   transition: 0.2s;
 }
 .icon-btn.edit:hover {
@@ -115,6 +228,51 @@
 }
 .icon-btn.delete:hover {
   background: #fee2e2;
+}
+.icon-btn.warn {
+  background: #fff7ed;
+  border-color: #fdba74;
+  color: #c2410c;
+}
+.icon-btn.warn:hover {
+  background: #ffedd5;
+}
+
+.table-shell {
+  overflow-x: auto;
+  border-radius: 14px;
+  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.08);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+.table-shell table {
+  min-width: 720px;
+}
+
+.empty-state {
+  padding: 32px 16px;
+  text-align: center;
+  color: #64748b;
+}
+
+.empty-state h4 {
+  color: #0f172a;
+  margin-bottom: 6px;
+  font-size: 18px;
+  font-family: "Space Grotesk", sans-serif;
+}
+
+.state-card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 14px 18px;
+  margin-bottom: 16px;
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
+}
+
+.state-card.error {
+  background: #fff1f2;
+  border: 1px solid rgba(248, 113, 113, 0.35);
 }
 
 .dialog-overlay {
@@ -132,6 +290,63 @@
   border-radius: 10px;
   width: 400px;
   max-width: 90%;
+}
+
+.request-dialog {
+  width: min(720px, 92vw);
+  border-radius: 18px;
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.2);
+}
+
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.dialog-header h3 {
+  font-family: "Space Grotesk", sans-serif;
+  margin-bottom: 4px;
+}
+
+.dialog-header p {
+  color: #64748b;
+  font-size: 14px;
+}
+
+.dialog-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.dialog-grid label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+.dialog-grid p,
+.dialog-grid a {
+  color: #0f172a;
+  font-size: 14px;
+  margin-top: 6px;
+  display: inline-block;
+}
+
+.dialog-span {
+  grid-column: span 2;
+}
+
+.bio-block {
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 12px;
+  border: 1px solid #e2e8f0;
+  white-space: pre-wrap;
 }
 
 .dialog-body label {
@@ -173,4 +388,21 @@
 }
 .save-btn:hover {
   background: #0056b3;
+}
+
+@media (max-width: 720px) {
+  .dialog-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .authors-header h2 {
+    font-size: 1.6rem;
+  }
+
+  .meta-pill {
+    width: 100%;
+    justify-content: center;
+  }
 }

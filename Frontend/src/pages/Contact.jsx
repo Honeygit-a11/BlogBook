@@ -32,7 +32,7 @@ const ContactPage = () => {
   };
 
   return (
-    <div className="contact-page-container">
+    <div className="contact-page-container bg-slate-50 text-slate-900">
       {/* ======================= LEFT COLUMN: CONTACT FORM ======================= */}
       <div className="contact-form-section">
         <h2>Send us a message</h2>

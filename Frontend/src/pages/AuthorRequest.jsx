@@ -1,14 +1,5 @@
 import React, { useState } from "react";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardActions,
-  Typography,
-  TextField,
-  Button,
-  CircularProgress,
-} from "@mui/material";
+import { TextField, Button, CircularProgress } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import "../../style/AuthorRequest.css";
 
@@ -32,14 +23,14 @@ export default function AuthorRequest() {
 
     setIsSubmitting(true);
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:4000/api/auth/author-request', {
-        method: 'POST',
+      const token = localStorage.getItem("token");
+      const response = await fetch("http://localhost:4000/api/auth/author-request", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(formData),
       });
 
       const data = await response.json();
@@ -70,107 +61,152 @@ export default function AuthorRequest() {
     }));
   };
 
+  const inputSx = {
+    "& .MuiInputLabel-root": {
+      fontSize: "1.14rem",
+    },
+    "& .MuiOutlinedInput-root": {
+      borderRadius: "14px",
+      backgroundColor: "#ffffff",
+    },
+    "& .MuiOutlinedInput-input": {
+      fontSize: "1.14rem",
+      padding: "21px 18px",
+    },
+    "& .MuiInputBase-inputMultiline": {
+      fontSize: "1.14rem",
+      lineHeight: 1.8,
+      padding: "18px",
+    },
+    "& .MuiOutlinedInput-input::placeholder": {
+      textAlign: "center",
+      opacity: 1,
+    },
+    "& .MuiInputBase-inputMultiline::placeholder": {
+      textAlign: "center",
+      opacity: 1,
+    },
+  };
+
   return (
-    <div className="form-page">
-      <Card className="form-card" elevation={8}>
-        <CardHeader
-          title={
-            <Typography variant="h4" className="form-title">
-              Author Application
-            </Typography>
-          }
-          subheader={
-            <Typography variant="body2" color="text.secondary" className="form-subtitle">
-              Fill in the details below. We'll review your application within 24 hours.
-            </Typography>
-          }
-        />
+    <div className="author-page bg-slate-50 text-slate-900">
+      <section className="author-hero">
+        <div className="author-wrap">
+          <p className="author-kicker">Creator Program</p>
+          <h1>Apply to become a BlogBook author</h1>
+          <p className="author-lead">
+            Publish your ideas for a wider audience. We review every application for clarity,
+            consistency, and topic fit.
+          </p>
+          <div className="author-badges">
+            <span>24h review</span>
+            <span>Editorial feedback</span>
+            <span>Featured opportunities</span>
+          </div>
+        </div>
+      </section>
 
-        <CardContent>
-          <form onSubmit={handleSubmit} className="form-container">
-            <TextField
-              fullWidth
-              required
-              label="Full Name"
-              name="fullName"
-              placeholder="John Doe"
-              value={formData.fullName}
-              onChange={handleChange}
-              multiline
-              minRows={1}
-              variant="outlined"
-            />
+      <section className="author-form-area">
+        <div className="author-wrap">
+          <div className="author-form-shell">
+            <div className="author-form-card">
+              <div className="author-form-head">
+                <h2>Author Application</h2>
+                <p>Complete the form below. Required fields are marked.</p>
+              </div>
 
-            <TextField
-              fullWidth
-              required
-              label="Email Address"
-              name="email"
-              type="email"
-              placeholder="john@example.com"
-              value={formData.email}
-              onChange={handleChange}
-              multiline
-              minRows={1}
-              
-              variant="outlined"
-            />
+              <form onSubmit={handleSubmit} className="author-form">
+                <TextField
+                  fullWidth
+                  required
+                  label="Full Name"
+                  name="fullName"
+                  placeholder="John Doe"
+                  value={formData.fullName}
+                  onChange={handleChange}
+                  variant="outlined"
+                  size="medium"
+                  sx={inputSx}
+                />
 
-            <TextField
-              fullWidth
-              required
-              label="Brief Bio"
-              name="bio"
-              placeholder="Tell us about your writing experience and background (100–200 words)"
-              value={formData.bio}
-              onChange={handleChange}
-              multiline
-              minRows={4}
-              variant="outlined"
-            />
+                <TextField
+                  fullWidth
+                  required
+                  label="Email Address"
+                  name="email"
+                  type="email"
+                  placeholder="john@example.com"
+                  value={formData.email}
+                  onChange={handleChange}
+                  variant="outlined"
+                  size="medium"
+                  sx={inputSx}
+                />
 
-            <TextField
-              fullWidth
-              label="Topics of Interest"
-              name="topics"
-              placeholder="Technology, Business, Health"
-              value={formData.topics}
-              onChange={handleChange}
-              multiline
-              minRows={1}
-              variant="outlined"
-              helperText="Separate multiple topics with commas"
-            />
+                <TextField
+                  fullWidth
+                  required
+                  label="Brief Bio"
+                  name="bio"
+                  placeholder="Tell us about your writing experience and background (100-200 words)"
+                  value={formData.bio}
+                  onChange={handleChange}
+                  multiline
+                  minRows={10}
+                  variant="outlined"
+                  sx={inputSx}
+                />
 
-            <TextField
-              fullWidth
-              label="Portfolio / Writing Samples"
-              name="portfolio"
-              type="url"
-              placeholder="https://yourportfolio.com"
-              value={formData.portfolio}
-              onChange={handleChange}
-              variant="outlined"
-            />
+                <TextField
+                  fullWidth
+                  label="Topics of Interest"
+                  name="topics"
+                  placeholder="Technology, Business, Health"
+                  value={formData.topics}
+                  onChange={handleChange}
+                  variant="outlined"
+                  helperText="Separate multiple topics with commas"
+                  size="medium"
+                  sx={inputSx}
+                />
 
-            <CardActions className="submit-btn-wrapper">
-              <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                fullWidth
-                disabled={isSubmitting}
-                size="large"
-                startIcon={
-                  isSubmitting ? <CircularProgress size={20} color="inherit" /> : <SendIcon />
-                }
-              >
-                {isSubmitting ? "Submitting..." : "Submit Application"}
-              </Button>
-            </CardActions>
-          </form>
-        </CardContent>
-      </Card>
+                <TextField
+                  fullWidth
+                  label="Portfolio / Writing Samples"
+                  name="portfolio"
+                  type="url"
+                  placeholder="https://yourportfolio.com"
+                  value={formData.portfolio}
+                  onChange={handleChange}
+                  variant="outlined"
+                  size="medium"
+                  sx={inputSx}
+                />
+
+                <Button
+                  type="submit"
+                  variant="contained"
+                  fullWidth
+                  disabled={isSubmitting}
+                  size="large"
+                  startIcon={isSubmitting ? <CircularProgress size={20} color="inherit" /> : <SendIcon />}
+                  sx={{
+                    borderRadius: "14px",
+                    textTransform: "none",
+                    fontWeight: 700,
+                    fontSize: "1.1rem",
+                    py: 1.8,
+                    backgroundColor: "#191919",
+                    "&:hover": { backgroundColor: "#111111" },
+                  }}
+                >
+                  {isSubmitting ? "Submitting..." : "Submit Application"}
+                </Button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
